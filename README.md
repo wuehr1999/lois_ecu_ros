@@ -85,7 +85,7 @@ Clone this repository into Your ROS2 workspace and simply run ```colcon build```
   Current runtime parameters.
 
 ## Parameters
-  **wheel_width_m** (float, default: 0.t)
+  **wheel_width_m** (float, default: 0.5)
 
   Robot width between wheel centers in m
 
