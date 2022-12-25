@@ -15,6 +15,10 @@ ROS Node for interfacing ECU PCB via Serial communication (termios character dev
 ## 3rd-party dependencies
  - inipp: https://github.com/mcmtroffaes/inipp
 
+## Installation
+
+Clone this repository into Your ROS2 workspace and simply run ```colcon build```.
+
 ## Subscribed Topics
   **cmd_vel** (geometry_msgs::Twist)
 
@@ -81,25 +85,25 @@ ROS Node for interfacing ECU PCB via Serial communication (termios character dev
   Current runtime parameters.
 
 ## Parameters
-  **width** (float, default: 0.47)
+  **wheel_width_m** (float, default: 0.t)
 
   Robot width between wheel centers in m
 
-  **radius** (float, default: 0.13)
+  **wheel_radius_m** (float, default: 0.13)
 
   Wheel radius in m
 
-  **steps** (float, default: 66)
+  **encoder_steps** (float, default: 66)
 
-  Encoder steps
+  Encoder steps per revolution
 
-  **ecuport** (string, default: "/dev/ttyTHS1")
+  **port** (string, default: "/dev/ttyTHS1")
 
-  **ecubaud** (int, default: 115200)
-
-  **odom_publish** (bool, default: true)
-
-  publish odometry and tf
+  **baud** (int, default: 115200)
 
   **odom_parent** (string, default: "odom")
+
+  **odom_child** (string, default: "base_link")
+  
+  **configfile** (string, default: "/home/jonas/lois/colcon_ws/lois_ecu/config/runtimeparameters.ini")
 
