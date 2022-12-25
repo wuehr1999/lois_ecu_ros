@@ -1,3 +1,5 @@
+[![Build Status](https://github.com/wuehr1999/lois_ecu_ros/actions/workflows/ros2.yml/badge.svg)](https://github.com/wuehr1999/lois_ecu_ros/actions/workflows/ros2.yml)
+
 # lois_ecu_ros
 ROS2 driver for [lois_ecu](https://github.com/wuehr1999/lois_ecu)
 
