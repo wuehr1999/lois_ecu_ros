@@ -99,7 +99,7 @@ Clone this repository into Your ROS2 workspace and simply run ```colcon build```
 
   Encoder steps per revolution
 
-  **port** (string, default: "/dev/ttyTHS1")
+  **port** (string, default: "/dev/ttyUSB0")
 
   **baud** (int, default: 115200)
 
