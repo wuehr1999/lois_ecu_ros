@@ -44,13 +44,6 @@ ECU::ECU() : Node("lois_ecu"), running(true), emergencyStop(false)
     term.c_iflag = 0x04;
     term.c_lflag = 0;
     term.c_oflag = 0;
-    //    term.c_cflag=baud|CS8|CLOCAL|CREAD;
-    //    term.c_lflag =0;
-    //    term.c_iflag = IGNPAR | IGNBRK | IGNCR;
-    //    term.c_iflag = 0;
-    //    term.c_oflag =0;
-    //    term.c_cc[VTIME]=1;
-    //    term.c_cc[VMIN]=0;
     tcflush[fd, TCIFLUSH];
     tcsetattr(fd, TCSANOW, &term);
 
