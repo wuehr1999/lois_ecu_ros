@@ -36,7 +36,7 @@ ECU::ECU() : Node("lois_ecu"), running(true), emergencyStop(false)
         RCLCPP_ERROR(get_logger(), "failed to open port %s\n", port.c_str());
         exit(1);
     }
-    RCLCPP_INFO(get_logger(), "set up ECU connection on port %s\n", port);
+    RCLCPP_INFO(get_logger(), "set up ECU connection on port %s\n", port.c_str());
 
     tcgetattr(fd, &term);
     cfsetispeed(&term, baud);

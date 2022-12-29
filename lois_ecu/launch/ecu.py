@@ -9,12 +9,12 @@ def generate_launch_description():
       name='ecu_node',
       output='screen',
       parameters=[
-          {'port': '/dev/ttyUSB0'},
+          {'port': '/dev/ttyTHS1'},
           {'baud': 115200},
           {'wheel_width_m': 0.5},
           {'wheel_radius_m': 0.125},
           {'encoder_steps': 60},
-          {'configfile': '/home/jonas/lois/colcon_ws/lois_ecu/config/runtimeparameters.ini'},
+          {'configfile': '/home/lois/colcon/lois_ecu_ros/lois_ecu/config/runtimeparameters.ini'},
           {'odom_parent': 'odom'},
           {'odom_child': 'base_link'}
       ]
