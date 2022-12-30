@@ -29,6 +29,7 @@ ECU::ECU() : Node("lois_ecu"), running(true), emergencyStop(false)
     pubRuntimeParameters = create_publisher<lois_ecu::msg::RuntimeParameters>("/ecu_params", 1);
 
     readRuntimeParametersFromIni();
+    publishRuntimeParameters();
 
     fd = open(port.c_str(), O_RDWR | O_NOCTTY);
     if (fd == -1)
@@ -82,6 +83,8 @@ ECU::ECU() : Node("lois_ecu"), running(true), emergencyStop(false)
         "/heading_request", 1, [&](const std_msgs::msg::UInt32 msg) { requestHeading(msg.data); });
     subShit = create_subscription<std_msgs::msg::UInt32>(
         "/shit_ball", 1, [&](const std_msgs::msg::UInt32 msg) { shitBall(); });
+    subRequestParams = create_subscription<std_msgs::msg::Bool>(
+        "/ecu_params_request", 1, [&](const std_msgs::msg::Bool msg) { publishRuntimeParameters(); });
     subSetParams = create_subscription<lois_ecu::msg::RuntimeParameters>(
         "/ecu_params", 1, [&](const lois_ecu::msg::RuntimeParameters params) {
             ECU::RuntimeParameters_t dat;
@@ -681,6 +684,32 @@ void ECU::setRuntimeParameters(ECU::RuntimeParameters_t params, bool writeToIni)
 
     RCLCPP_INFO(this->get_logger(), "Runtime Parameters\n%s\n",
                 serializeRuntimeParameters().c_str());
+}
+
+void ECU::publishRuntimeParameters()
+{
+  ECU::RuntimeParameters_t dat = getRuntimeParameters();
+  lois_ecu::msg::RuntimeParameters params;
+  params.terminal_mode.data = dat.terminalMode;
+  params.rpmctrl_enable.data = dat.rpmctrlEnable;
+  params.kp_left.data = dat.kpLeft;
+  params.tn_left.data = dat.tnLeft;
+  params.td_left.data = dat.tdLeft;
+  params.kp_right.data = dat.kpRight;
+  params.tn_right.data = dat.tnRight;
+  params.td_right.data = dat.tdRight;
+  params.corr_long_left.data = dat.corrLongLeft;
+  params.corr_short_left.data = dat.corrShortLeft;
+  params.corr_long_right.data = dat.corrLongRight;
+  params.corr_short_right.data = dat.corrShortRight;
+  params.period_latlon.data = dat.periodLatLon;
+  params.period_time.data = dat.periodTime;
+  params.period_date.data = dat.periodDate;
+  params.period_heading.data = dat.periodHeading;
+  params.period_encoders.data = dat.periodEncoders;
+  params.period_odometry.data = dat.periodOdometry;
+
+  pubRuntimeParameters->publish(params);
 }
 
 int ECU::calculateCRC(char *message)

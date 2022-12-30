@@ -440,6 +440,7 @@ class ECU : public rclcpp::Node
     **/
     float float_2x16(uint16_t val1, uint16_t val2);
 
+    void publishRuntimeParameters();
     // Callbacks for publishing
     void callback_EmergencyStop(bool isPressed);
     void callback_RPMRecord(ECU::RPMData_t record);
