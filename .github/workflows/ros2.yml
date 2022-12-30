@@ -43,11 +43,11 @@ jobs:
         
     - uses: actions/checkout@v3
       with:
-        path: 'ros2_ws/src/l3xz_openmv_camera'
+        path: 'ros2_ws/src/dut'
         
     - name: colcon build
       run: |
-        cd ${{github.workspace}}/ros2_ws/src/l3xz_openmv_camera
+        cd ${{github.workspace}}/ros2_ws/src/dut
         git submodule update --init
         source /opt/ros/${{ matrix.ros_distro }}/setup.bash
         cd ${{github.workspace}}/ros2_ws
