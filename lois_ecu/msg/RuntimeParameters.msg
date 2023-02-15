@@ -1,10 +1,12 @@
 std_msgs/UInt8 terminal_mode
 std_msgs/UInt8 rpmctrl_enable
+std_msgs/Float32 ka_left
 std_msgs/Float32 kp_left
 std_msgs/Float32 tn_left
 std_msgs/Float32 td_left
 std_msgs/Float32 corr_short_left
 std_msgs/Float32 corr_long_left
+std_msgs/Float32 ka_right
 std_msgs/Float32 kp_right
 std_msgs/Float32 tn_right
 std_msgs/Float32 td_right

@@ -74,7 +74,9 @@ class ECU : public rclcpp::Node
         RECORDTORQUE = 0x17,
         RESET = 0x18,
         SHIT = 0x19,
-        PERIODIC_ODOM = 0x20
+        PERIODIC_ODOM = 0x20,
+        LEFT_KA = 0x21,
+        RIGHT_KA = 0x22
     };
 
     /**
@@ -129,8 +131,8 @@ class ECU : public rclcpp::Node
     {
         int terminalMode;                                               // Terminal mode
         int rpmctrlEnable;                                              // Enable rpm control
-        float kpLeft, tnLeft, tdLeft, corrShortLeft, corrLongLeft;      // left rpm control
-        float kpRight, tnRight, tdRight, corrShortRight, corrLongRight; // right rpm control
+        float kaLeft, kpLeft, tnLeft, tdLeft, corrShortLeft, corrLongLeft;      // left rpm control
+        float kaRight, kpRight, tnRight, tdRight, corrShortRight, corrLongRight; // right rpm control
         int periodLatLon, periodTime, periodDate, periodHeading, periodEncoders,
             periodOdometry; // message periods in ms
     } RuntimeParameters_t;
@@ -194,19 +196,21 @@ class ECU : public rclcpp::Node
 
     /**
      @brief Change parameters of left RPM controller.
+     @param Ka precontrol gain
      @param Kp proportional coefficient
      @param Tn reset time
      @param Td damping time
      **/
-    void setPILeft(float Kp, float Tn, float Td);
+    void setPILeft(float Ka, float Kp, float Tn, float Td);
 
     /**
      @brief Change parameters of left RPM controller.
+     @param Ka precontrol gain
      @param Kp proportional coefficient
      @param Tn reset time
      @param Td damping time
      **/
-    void setPIRight(float Kp, float Tn, float Td);
+    void setPIRight(float Ka, float Kp, float Tn, float Td);
 
     /**
      @brief Set encoder level time correction coefficients for left encoder.
