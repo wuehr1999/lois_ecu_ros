@@ -90,6 +90,7 @@ ECU::ECU() : Node("lois_ecu"), running(true), emergencyStop(false)
             ECU::RuntimeParameters_t dat;
             dat.terminalMode = params.terminal_mode.data;
             dat.rpmctrlEnable = params.rpmctrl_enable.data;
+            dat.rpmLowpass = params.rpm_lowpass.data;
             dat.kaLeft = params.ka_left.data;
             dat.kpLeft = params.kp_left.data;
             dat.tnLeft = params.tn_left.data;
@@ -550,6 +551,11 @@ void ECU::setPIRight(float Ka, float Kp, float Tn, float Td)
     send(Commands::RIGHT_TD, Td);
 }
 
+void ECU::setRPMLowpass(float coeff)
+{
+    send(Commands::RPM_LOWPASS, coeff);
+}
+
 void ECU::requestHeading(uint32_t count)
 {
     RCLCPP_INFO(get_logger(), "Requesting heading record (measurements: %d)", count);
@@ -581,6 +587,7 @@ void ECU::readRuntimeParametersFromIni()
     inipp::get_value(ini.sections["UART"], "TERMINALMODE", runtimeParameters.terminalMode);
 
     inipp::get_value(ini.sections["RPMCTRL"], "RPMCTRLENABLE", runtimeParameters.rpmctrlEnable);
+    inipp::get_value(ini.sections["RPMCTRL"], "LOWPASS", runtimeParameters.rpmLowpass);
     inipp::get_value(ini.sections["RPMCTRL"], "KALEFT", runtimeParameters.kaLeft);
     inipp::get_value(ini.sections["RPMCTRL"], "KPLEFT", runtimeParameters.kpLeft);
     inipp::get_value(ini.sections["RPMCTRL"], "TNLEFT", runtimeParameters.tnLeft);
@@ -613,6 +620,7 @@ std::string ECU::serializeRuntimeParameters()
 
     params += "\n[RPMCTRL]\n";
     params += "RPMCTRLENABLE = " + std::to_string((int)runtimeParameters.rpmctrlEnable) + "\n";
+    params += "LOWPASS = " + std::to_string(runtimeParameters.rpmLowpass) + "\n";
     params += "KALEFT = " + std::to_string(runtimeParameters.kaLeft) + "\n";
     params += "KPLEFT = " + std::to_string(runtimeParameters.kpLeft) + "\n";
     params += "TNLEFT = " + std::to_string(runtimeParameters.tnLeft) + "\n";
@@ -677,6 +685,7 @@ void ECU::setRuntimeParameters(ECU::RuntimeParameters_t params, bool writeToIni)
     setPIRight(runtimeParameters.kaRight, runtimeParameters.kpRight, runtimeParameters.tnRight, runtimeParameters.tdRight);
     setCorrLeft(runtimeParameters.corrLongLeft, runtimeParameters.corrShortLeft);
     setCorrRight(runtimeParameters.corrLongRight, runtimeParameters.corrShortRight);
+    setRPMLowpass(runtimeParameters.rpmLowpass);
 
     send(PERIODIC_LATLON, 0, (uint16_t)runtimeParameters.periodLatLon);
     send(PERIODIC_TIME, 0, (uint16_t)runtimeParameters.periodTime);
@@ -700,6 +709,7 @@ void ECU::publishRuntimeParameters()
   lois_ecu::msg::RuntimeParameters params;
   params.terminal_mode.data = dat.terminalMode;
   params.rpmctrl_enable.data = dat.rpmctrlEnable;
+  params.rpm_lowpass.data = dat.rpmLowpass;
   params.ka_left.data = dat.kaLeft;
   params.kp_left.data = dat.kpLeft;
   params.tn_left.data = dat.tnLeft;

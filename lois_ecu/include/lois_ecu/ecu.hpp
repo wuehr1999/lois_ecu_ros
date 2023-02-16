@@ -76,7 +76,8 @@ class ECU : public rclcpp::Node
         SHIT = 0x19,
         PERIODIC_ODOM = 0x20,
         LEFT_KA = 0x21,
-        RIGHT_KA = 0x22
+        RIGHT_KA = 0x22,
+        RPM_LOWPASS = 0x23
     };
 
     /**
@@ -133,6 +134,7 @@ class ECU : public rclcpp::Node
         int rpmctrlEnable;                                              // Enable rpm control
         float kaLeft, kpLeft, tnLeft, tdLeft, corrShortLeft, corrLongLeft;      // left rpm control
         float kaRight, kpRight, tnRight, tdRight, corrShortRight, corrLongRight; // right rpm control
+        float rpmLowpass;
         int periodLatLon, periodTime, periodDate, periodHeading, periodEncoders,
             periodOdometry; // message periods in ms
     } RuntimeParameters_t;
@@ -211,6 +213,12 @@ class ECU : public rclcpp::Node
      @param Td damping time
      **/
     void setPIRight(float Ka, float Kp, float Tn, float Td);
+
+    /**
+     @brief Set RPM setpoint lowpass filter coefficient for both motors.
+     @param coeff setpoint = (1 - coeff) * setpoint_old + coeff * setpoint
+     **/
+    void setRPMLowpass(float coeff);
 
     /**
      @brief Set encoder level time correction coefficients for left encoder.

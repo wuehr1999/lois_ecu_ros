@@ -10,6 +10,7 @@ std_msgs/Float32 ka_right
 std_msgs/Float32 kp_right
 std_msgs/Float32 tn_right
 std_msgs/Float32 td_right
+std_msgs/Float32 rpm_lowpass 
 std_msgs/Float32 corr_short_right
 std_msgs/Float32 corr_long_right
 std_msgs/UInt16 period_latlon
